@@ -5,7 +5,7 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = 'sua_chave_secreta_aqui'
 
-SENHA_ADMIN = "1234"
+SENHA_ADMIN = "441404"
 @app.route("/admin/login", methods=["GET", "POST"])
 def login_admin():
     if request.method == "POST":
