@@ -1,0 +1,14 @@
+h1{
+    text-align: center;
+    color: black;
+    margin-top: 40px;
+}
+h2{
+    text-align: left;
+    color: black;
+    margin-top: 20px;
+}
+body{
+    background-color: lightblue;
+    font-family: Arial, sans-serif;
+}

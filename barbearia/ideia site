@@ -1,0 +1,22 @@
+ideia site 
+
+homepage:
+santana barber
+
+valores:
+corte: R$xx
+barba: R$xx
+corte + barba: R$xx
+
+horarios:
+seg    ter    qua    qui    sex    sab
+|      |      |      |      |      |
+\/     \/     \/     \/     \/     \/
+            agendar:
+            
+        horarios disponiveis pro dia
+
+        nome:
+        telefone:
+        serviso
+        botao:confirmar horario

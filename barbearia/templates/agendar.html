@@ -1,0 +1,47 @@
+
+<html>
+<head>
+    <title>Agendar</title>
+</head>
+<body>
+    <h1>Agendamento</h1>
+
+<p>Dia escolhido: {{ dia }}</p>
+
+<form method="post">
+    <label>Horário:</label>
+    
+        <select name="horario">
+    {% for horario in horarios %}
+        <option>{{ horario }}</option>
+    {% endfor %}
+        </select>
+    
+
+    <br><br>
+
+    <label>Nome:</label>
+    <input type="text" name="nome">
+
+    <br><br>
+
+    <label>Telefone:</label>
+    <input type="text" name="telefone">
+
+    <br><br>
+
+    <label>Serviço:</label>
+    <select name="servico">
+        <option>Corte</option>
+        <option>Barba</option>
+        <option>Corte + Barba</option>
+    </select>
+
+    <br><br>
+
+    <button type="submit">
+        Confirmar horário
+    </button>
+</form>
+</body>
+</html>

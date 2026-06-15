@@ -1,0 +1,35 @@
+
+<html>
+<head>
+    
+    <title>Santana Barber</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body background-color: lightblue;>
+    <header>
+        <h1>Bem-vindo ao Santana Barber</h1>
+
+        <h2>Serviços</h2>
+        <div>
+            <li>corte de cabelo: R$ 30,00</li>
+            <li>maquina: R$ 5,00</li>
+            <li>barba: R$ 30,00</li>
+            <li>corte + barba: R$ 55,00</li>
+        </div>
+    <h2>Agende seu horário</h2>
+    <form action="/agendar" method="post">
+        <label for="dia">Dia:</label>
+        
+            <button type="submit" name="dia" value="segunda">Segunda-feira</button>
+            <button type="submit" name="dia" value="terca">Terça-feira</button>
+            <button type="submit" name="dia" value="quarta">Quarta-feira</button>
+            <button type="submit" name="dia" value="quinta">Quinta-feira</button>
+            <button type="submit" name="dia" value="sexta">Sexta-feira</button>
+        
+        <input type="date" name="data">
+        <br><br>
+        <button type="submit">Agendar</button>
+    </form>
+    </header>
+</body>
+</html>

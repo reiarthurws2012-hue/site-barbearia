@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel Administrativo</title>
+</head>
+<body>
+
+    <h1>Painel Administrativo - Santana Barber</h1>
+
+    <a href="/admin/sair">
+        <button>Sair</button>
+    </a>
+
+    <hr>
+
+    <h2>Agendamentos</h2>
+
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>ID</th>
+            <th>Dia</th>
+            <th>Horário</th>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Serviço</th>
+        </tr>
+
+        {% for agendamento in agendamentos %}
+        <tr>
+            <td>{{ agendamento[0] }}</td>
+            <td>{{ agendamento[1] }}</td>
+            <td>{{ agendamento[2] }}</td>
+            <td>{{ agendamento[3] }}</td>
+            <td>{{ agendamento[4] }}</td>
+            <td>{{ agendamento[5] }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</body>
+</html>
