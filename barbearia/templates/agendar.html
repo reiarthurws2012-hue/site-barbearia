@@ -7,8 +7,10 @@
     <h1>Agendamento</h1>
 
 <p>Dia escolhido: {{ dia }}</p>
+<p>Data escolhida: {{ data }}</p>
 
 <form method="post">
+    <input type="hidden" name="data" value="{{ data }}">
     <label>Horário:</label>
     
         <select name="horario">

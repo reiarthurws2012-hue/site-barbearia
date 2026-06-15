@@ -29,9 +29,9 @@ def admin():
     cursor = banco.cursor()
 
     cursor.execute("""
-        SELECT id, dia, horario, nome, telefone, servico
+        SELECT id, dia, data, horario, nome, telefone, servico
         FROM agendamentos
-        ORDER BY dia, horario
+                ORDER BY data, horario
     """)
 
     agendamentos = cursor.fetchall()
@@ -76,22 +76,38 @@ def criar_banco():
         CREATE TABLE IF NOT EXISTS agendamentos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             dia TEXT NOT NULL,
+            data TEXT NOT NULL,
             horario TEXT NOT NULL,
             nome TEXT NOT NULL,
             telefone TEXT NOT NULL,
             servico TEXT NOT NULL,
-            UNIQUE(dia, horario)
+            UNIQUE(dia, data, horario)
         )
     """)
 
     banco.commit()
+    # Migração simples: se a tabela já existia sem a coluna 'data', adicioná-la.
+    cursor.execute("PRAGMA table_info(agendamentos)")
+    cols = [row[1] for row in cursor.fetchall()]
+    if 'data' not in cols:
+        try:
+            cursor.execute("ALTER TABLE agendamentos ADD COLUMN data TEXT DEFAULT ''")
+            banco.commit()
+        except sqlite3.OperationalError:
+            # Em caso de erro (raridade), ignorar para não quebrar a inicialização
+            pass
+
     banco.close()
 
-def horarios_ocupados(dia):
+def horarios_ocupados(dia, data=None):
     banco = conectar()
     cursor = banco.cursor()
 
-    cursor.execute("SELECT horario FROM agendamentos WHERE dia = ?", (dia,))
+    if data:
+        cursor.execute("SELECT horario FROM agendamentos WHERE data = ?", (data,))
+    else:
+        cursor.execute("SELECT horario FROM agendamentos WHERE dia = ?", (dia,))
+
     ocupados = [linha[0] for linha in cursor.fetchall()]
 
     banco.close()
@@ -122,6 +138,9 @@ def agendar():
 def agendar_dia(dia):
     data = request.args.get("data")
     if request.method == "POST":
+        # prefer form-supplied data (hidden field) over query param
+        data_form = request.form.get("data") or data
+
         horario = request.form["horario"]
         nome = request.form["nome"]
         telefone = request.form["telefone"]
@@ -132,9 +151,9 @@ def agendar_dia(dia):
 
         try:
             cursor.execute("""
-                INSERT INTO agendamentos (dia, horario, nome, telefone, servico)
-                VALUES (?, ?, ?, ?, ?)
-            """, (dia, horario, nome, telefone, servico))
+                INSERT INTO agendamentos (dia, data, horario, nome, telefone, servico)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (dia, data_form, horario, nome, telefone, servico))
 
             banco.commit()
             banco.close()
@@ -142,6 +161,7 @@ def agendar_dia(dia):
             return render_template(
                 "confirmar.html",
                 dia=dia,
+                data=data_form,
                 horario=horario,
                 nome=nome,
                 servico=servico
@@ -152,7 +172,7 @@ def agendar_dia(dia):
             return "Esse horário já foi agendado. Volte e escolha outro."
 
     todos_horarios = gerar_horarios(dia)
-    ocupados = horarios_ocupados(dia)
+    ocupados = horarios_ocupados(dia, data)
 
     horarios = []
 
@@ -160,7 +180,7 @@ def agendar_dia(dia):
         if horario not in ocupados:
             horarios.append(horario)
 
-    return render_template("agendar.html", dia=dia, horarios=horarios)
+    return render_template("agendar.html", dia=dia, horarios=horarios, data=data)
 @app.route("/confirmar")
 def confirmar():
     return render_template("confirmar.html")
